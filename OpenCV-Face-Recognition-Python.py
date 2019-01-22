@@ -51,8 +51,7 @@ import numpy as np
 # In[2]:
 
 #there is no label 0 in our training data so subject name for index/label 0 is empty
-subjects = ["", "Ramiz Raja", "Elvis Presley"]
-
+subjects = ["", "Ramiz Raja", "Elvis Presley","yangmi"]
 
 # ### Prepare training data
 
@@ -257,6 +256,7 @@ face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 # In[7]:
 
 #train our face recognizer of our training faces
+print(labels)
 face_recognizer.train(faces, np.array(labels))
 
 
@@ -302,8 +302,13 @@ def predict(test_img):
     #detect face from the image
     face, rect = detect_face(img)
 
+    cv2.imshow("face",face)
+    cv2.waitKey(1000)
+    cv2.destroyAllWindows()
+
     #predict the image using our face recognizer 
     label, confidence = face_recognizer.predict(face)
+    print("label,confidence",label,confidence)
     #get name of respective label returned by face recognizer
     label_text = subjects[label]
     
@@ -323,15 +328,21 @@ print("Predicting images...")
 #load test images
 test_img1 = cv2.imread("test-data/test1.jpg")
 test_img2 = cv2.imread("test-data/test2.jpg")
+test_img3 = cv2.imread("test-data/test3.jpg")
 
 #perform a prediction
 predicted_img1 = predict(test_img1)
 predicted_img2 = predict(test_img2)
+predicted_img3 = predict(test_img3)
+
+
 print("Prediction complete")
 
 #display both images
 cv2.imshow(subjects[1], cv2.resize(predicted_img1, (400, 500)))
 cv2.imshow(subjects[2], cv2.resize(predicted_img2, (400, 500)))
+cv2.imshow(subjects[3], cv2.resize(predicted_img3, (400, 500)))
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 cv2.waitKey(1)
